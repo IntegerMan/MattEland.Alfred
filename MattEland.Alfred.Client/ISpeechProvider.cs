@@ -1,4 +1,4 @@
-﻿namespace MattEland.Alfred;
+﻿namespace MattEland.Alfred.Client;
 
 public interface ISpeechProvider {
     void Say(string text);

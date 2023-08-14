@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MattEland.Alfred", "MattEland.Alfred\MattEland.Alfred.csproj", "{522BCD1C-ACFA-42D0-AEEC-2BD11BF4F31B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MattEland.Alfred", "MattEland.Alfred\MattEland.Alfred.csproj", "{522BCD1C-ACFA-42D0-AEEC-2BD11BF4F31B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MattEland.Alfred.Cli", "MattEland.Alfred.Cli\MattEland.Alfred.Cli.csproj", "{48677D16-9C22-4509-B8AB-1DAE14BF2CD6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MattEland.Alfred.Cli", "MattEland.Alfred.Cli\MattEland.Alfred.Cli.csproj", "{48677D16-9C22-4509-B8AB-1DAE14BF2CD6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MattEland.Alfred.Tests", "MattEland.Alfred.Tests\MattEland.Alfred.Tests.csproj", "{D322B9F1-A546-4AB8-9242-2147BA806A79}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MattEland.Alfred.Tests", "MattEland.Alfred.Tests\MattEland.Alfred.Tests.csproj", "{D322B9F1-A546-4AB8-9242-2147BA806A79}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MattEland.Alfred.Client", "MattEland.Alfred.Client\MattEland.Alfred.Client.csproj", "{859BD962-54CA-4CCA-A47C-F61389C25C8D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{D322B9F1-A546-4AB8-9242-2147BA806A79}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D322B9F1-A546-4AB8-9242-2147BA806A79}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D322B9F1-A546-4AB8-9242-2147BA806A79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{859BD962-54CA-4CCA-A47C-F61389C25C8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{859BD962-54CA-4CCA-A47C-F61389C25C8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{859BD962-54CA-4CCA-A47C-F61389C25C8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{859BD962-54CA-4CCA-A47C-F61389C25C8D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

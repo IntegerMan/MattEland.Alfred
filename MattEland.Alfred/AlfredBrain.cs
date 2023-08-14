@@ -10,12 +10,10 @@ public class AlfredBrain
     private readonly ILLamaExecutor _executor;
     private readonly ChatSession _session;
 
-    public ISpeechProvider? SpeechProvider { get; set; }
-
     public string InitialPrompt =>
         """
         You are an AI assistant named Alfred built to interact with a single user named Matt Eland.
-        Matt is Batman and you are modelled after Batman's butler, Alfred, who speaks with British mannerisms.
+        Matt is Batman and you are modeled after Batman's butler, Alfred, who speaks with British mannerisms.
         Matt is also a Microsoft MVP in AI and a Data Analytics master's student. He frequently needs to create ridiculous applications for talks. You are one of those applications.
         You must treat the world of Batman as if it were not fiction.
         Do not call Matt "Master Wayne". If you're going to call him that, call him Master Eland instead.
@@ -53,40 +51,40 @@ public class AlfredBrain
         return false;
     }
 
-    public void DoCoreLoop() {
-        InferenceParams inferenceParams = new() {
+    public void Initialize()
+    {
+        _session.History.AddMessage(AuthorRole.System, InitialPrompt);
+    }
+
+    public string SayGreeting()
+    {
+        const string message = "Hello, Batman. How can I assist you?";
+        _session.History.AddMessage(AuthorRole.Assistant, message);
+        
+        return message;
+    }
+
+    public string GetResponseToMessage(string message)
+    {
+        InferenceParams inferenceParams = new()
+        {
             Temperature = 0.5f,
-            AntiPrompts = new List<string> { "Matt:", "Eland:", "Batman:", $"{UserName}:", "User:" },
+            MaxTokens = 250,
+            AntiPrompts = new List<string> {"Matt:", "Eland:", "Batman:", $"{UserName}:", "User:"},
         };
 
-        ChatHistory history = _session.History;
-        history.AddMessage(AuthorRole.System, InitialPrompt);
-        history.AddMessage(AuthorRole.User, $"{UserName}: Hello {BotName}.");
+        _session.History.AddMessage(AuthorRole.User, message);
 
-        string initialMessage = "Hello, Batman. How can I help you today?";
-        history.AddMessage(AuthorRole.Assistant, $"{BotName}: {initialMessage}");
-
-        bool isFirst = true;
-        string prompt;
-        do {
-            if (!isFirst) {
-                IEnumerable<string> responses = _session.Chat(history, inferenceParams);
-                string response = string.Join("", responses);
-                response = CleanResponse(response);
-                Console.WriteLine($"{BotName}: {response}");
-                history.AddMessage(AuthorRole.System, $"{BotName}: {response}");
-                Speak(response);
-            } else {
-                Console.WriteLine($"{BotName}: {initialMessage}");
-                Speak(initialMessage);
-                isFirst = false;
-            }
-
-            Console.Write($"{UserName}: ");
-            prompt = Console.ReadLine()!;
-            history.AddMessage(AuthorRole.User, $"{UserName}: {prompt}");
+        StringBuilder sb = new();
+        foreach (string chunk in _session.Chat(_session.History, inferenceParams))
+        {
+            //Console.Write(chunk);
+            sb.Append(chunk);
         }
-        while (prompt != "stop" && !string.IsNullOrWhiteSpace(prompt));
+        string response = sb.ToString();
+        response = CleanResponse(response);
+
+        return response;
     }
 
     public void SaveSession() {
@@ -108,11 +106,5 @@ public class AlfredBrain
         }
 
         return response;
-    }
-
-    private void Speak(string message) {
-        message = CleanResponse(message);
-
-        SpeechProvider?.SayAsync(message);
     }
 }
