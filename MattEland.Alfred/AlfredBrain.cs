@@ -44,10 +44,13 @@ public class AlfredBrain
             Console.WriteLine("Session loaded from " + SessionDirectory);
             return true;
         }
-        catch (IOException ex) {
-            Console.WriteLine("Could not load session information from " + SessionDirectory);
-            return false;
+        catch (LLama.Exceptions.RuntimeError) {
+            Console.WriteLine("Could not load session information from " + SessionDirectory + ". The state may be from a different model.");
         }
+        catch (IOException ex) {
+            Console.WriteLine("Could not load session information from " + SessionDirectory + ": " + ex.Message);
+        }
+        return false;
     }
 
     public void DoCoreLoop() {
@@ -99,11 +102,8 @@ public class AlfredBrain
     private string CleanResponse(string response) {
         List<string> ignorable = new() { "Matt:", "Batman:", "User:", "Assistant:", "Bot:", "System:", $"{UserName}:", $"{BotName}:" };
         foreach (string line in ignorable) {
-            while (response.StartsWith(line, StringComparison.OrdinalIgnoreCase)) {
-                response = response.Substring(line.Length).Trim();
-            }
-            while (response.EndsWith(line, StringComparison.OrdinalIgnoreCase)) {
-                response = response.Substring(0, response.Length - line.Length).Trim();
+            while (response.Contains(line, StringComparison.OrdinalIgnoreCase)) {
+                response = response.Replace(line, string.Empty, StringComparison.OrdinalIgnoreCase).Trim();
             }
         }
 
@@ -111,10 +111,7 @@ public class AlfredBrain
     }
 
     private void Speak(string message) {
-        List<string> ignorable = new() { "Matt:", "Batman:", "User:", "Assistant:", "Bot:", "System:", $"{UserName}:", $"{BotName}:" };
-        foreach (string line in ignorable) {
-            message = message.Replace(line, string.Empty, StringComparison.OrdinalIgnoreCase);
-        }
+        message = CleanResponse(message);
 
         SpeechProvider?.SayAsync(message);
     }
