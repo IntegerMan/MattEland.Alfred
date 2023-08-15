@@ -4,6 +4,6 @@ namespace MattEland.Alfred.Cli;
 
 public class AlfredCliOptions {
     [Required]
-    public string Model { get; set; }
+    public string ModelPath { get; set; }
 }
 

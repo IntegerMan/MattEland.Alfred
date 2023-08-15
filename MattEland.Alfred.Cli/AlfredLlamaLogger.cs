@@ -4,14 +4,15 @@ using Microsoft.Extensions.Logging;
 namespace MattEland.Alfred;
 
 public class AlfredLlamaLogger : ILLamaLogger {
-    private readonly ILogger _log;
+    private readonly ILogger<AlfredLlamaLogger> _log;
+    private int _nextId;
 
-    public AlfredLlamaLogger(ILogger log) {
+    public AlfredLlamaLogger(ILogger<AlfredLlamaLogger> log) {
         _log = log;
     }
 
     public void Log(string source, string message, ILLamaLogger.LogLevel level) {
-        EventId eventId = new EventId(-1, source);
+        EventId eventId = new(_nextId++, source);
 
         switch (level) {
             case ILLamaLogger.LogLevel.Info:

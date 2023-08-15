@@ -1,17 +1,17 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace MattEland.Alfred.Cli;
+namespace MattEland.Workers;
 
-public abstract class AlfredWorkerBase : IHostedService, ICanStopEarly, IDisposable {
+public abstract class WorkerBase : IHostedService, ICanStopEarly, IDisposable {
 
     private static readonly Action<ILogger, string, Exception?> logStarted = LoggerMessage.Define<string>(LogLevel.Information, new EventId(1, "StartingWorker"), "Registering {Worker} Task");
     private static readonly Action<ILogger, string, Exception?> logStopping = LoggerMessage.Define<string>(LogLevel.Information, new EventId(1, "StoppingWorker"), "Stopping {Worker} Task");
 
-    public ILogger<AlfredWorkerBase> Log { get; private set; }
+    public ILogger<WorkerBase> Log { get; private set; }
 
 
-    protected AlfredWorkerBase(ILogger<AlfredWorkerBase> log) {
+    protected WorkerBase(ILogger<WorkerBase> log) {
         Log = log;
     }
 

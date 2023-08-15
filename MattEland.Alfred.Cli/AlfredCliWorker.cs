@@ -1,25 +1,25 @@
 ﻿using LLama.Common;
 using MattEland.Alfred.Client;
+using MattEland.Workers;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace MattEland.Alfred.Cli;
 
-public class AlfredCliWorker : AlfredWorkerBase {
-    private readonly AlfredCliOptions options;
+public class AlfredCliWorker : WorkerBase {
+    private readonly AlfredCliOptions _options;
 
-    private static readonly Action<ILogger, Exception?> logExecuting = LoggerMessage.Define(LogLevel.Information, new EventId(1, "RunningExtract"), "Running Extract Task");
-    private static readonly Action<ILogger, string, Exception?> logWorkError = LoggerMessage.Define<string>(LogLevel.Error, new EventId(1, "ExtractError"), "Error running extract task: {ErrorMessage}");
-    private static readonly Action<ILogger, string, Exception?> logCompleted = LoggerMessage.Define<string>(LogLevel.Information, new EventId(1, "Cloned"), "Repository cloned to {Path}");
-
+    private static readonly Action<ILogger, string, Exception?> logWorkError = LoggerMessage.Define<string>(LogLevel.Error, new EventId(1, "Error"), "Error running task: {ErrorMessage}");
+    private readonly ILLamaLogger _llamaLogger;
     private Timer? _timer;
 
     public override string Name => "AlfredCli";
 
     public const int InitialDelayInSeconds = 1;
 
-    public AlfredCliWorker(ILogger<AlfredCliWorker> log, IOptions<AlfredCliOptions> options) : base(log) {
-        this.options = options.Value;
+    public AlfredCliWorker(ILogger<AlfredCliWorker> log, IOptions<AlfredCliOptions> options, ILLamaLogger llamaLogger) : base(log) {
+        this._options = options.Value;
+        this._llamaLogger = llamaLogger;
     }
 
     protected override async Task OnStartAsync() {
@@ -32,10 +32,9 @@ public class AlfredCliWorker : AlfredWorkerBase {
         bool succeeded = true;
 
         try {
-            string modelPath = @"C:\Models\wizardLM-7B.ggmlv3.q4_1.bin";
+            string modelPath = _options.ModelPath;
 
-            LLamaDefaultLogger logger = LLamaDefaultLogger.Default.EnableConsole().EnableFile("llamadebug.log");
-            using AlfredBrain alfred = new(modelPath, logger);
+            using AlfredBrain alfred = new(modelPath, _llamaLogger);
             using WindowsSpeechProvider speech = new();
 
             AlfredClient client = new(alfred, speech);

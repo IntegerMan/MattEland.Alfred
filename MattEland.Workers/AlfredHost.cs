@@ -4,14 +4,14 @@ using Microsoft.Extensions.Hosting.Internal;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace MattEland.Alfred.Cli;
+namespace MattEland.Workers;
 
-public class AlfredHost : IHost {
+public class WorkerHost : IHost {
     private int _runningServices;
     private readonly IHostLifetime _hostLifetime;
     private readonly ApplicationLifetime _applicationLifetime;
     private readonly HostOptions _options;
-    private readonly AlfredHostOptions _hostOptions;
+    private readonly WorkerHostOptions _hostOptions;
     private IEnumerable<IHostedService>? _hostedServices;
 
     private bool _started;
@@ -31,10 +31,10 @@ public class AlfredHost : IHost {
     private static readonly Action<ILogger, Exception?> logStoppingEarly = LoggerMessage.Define(LogLevel.Information, new EventId(8, "StoppingHostEarly"), $"All workers completed. {Name} will now shut down.");
     private static readonly Action<ILogger, Exception?> logNoServices = LoggerMessage.Define(LogLevel.Warning, new EventId(4, "NoServices"), $"{Name} started without any services registered.");
 
-    public ILogger<AlfredHost> Log { get; }
+    public ILogger<WorkerHost> Log { get; }
 
-    public AlfredHost(IServiceProvider services, IHostApplicationLifetime applicationLifetime, ILogger<AlfredHost> logger,
-        IHostLifetime hostLifetime, IOptions<HostOptions> options, IOptions<AlfredHostOptions> hostOptions) {
+    public WorkerHost(IServiceProvider services, IHostApplicationLifetime applicationLifetime, ILogger<WorkerHost> logger,
+        IHostLifetime hostLifetime, IOptions<HostOptions> options, IOptions<WorkerHostOptions> hostOptions) {
 
         Services = services;
         Log = logger;

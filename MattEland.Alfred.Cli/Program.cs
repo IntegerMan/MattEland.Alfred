@@ -4,7 +4,7 @@ internal class Program
 {
     private static int Main(string[] args)
     {
-        AlfredCliProgram alfred = new();
+        AlfredProgram alfred = new();
         return alfred.Run(args);
     }
 }

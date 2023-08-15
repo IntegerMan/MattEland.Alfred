@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Hosting;
 
-namespace MattEland.Alfred.Cli;
+namespace MattEland.Workers;
 
 public interface ICanStopEarly : IHostedService {
     string Name { get; }
