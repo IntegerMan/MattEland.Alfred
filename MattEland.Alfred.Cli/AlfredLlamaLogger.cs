@@ -1,7 +1,7 @@
 ﻿using LLama.Common;
 using Microsoft.Extensions.Logging;
 
-namespace MattEland.Alfred;
+namespace MattEland.Alfred.Cli;
 
 public class AlfredLlamaLogger : ILLamaLogger {
     private readonly ILogger<AlfredLlamaLogger> _log;

@@ -1,4 +1,4 @@
-﻿namespace MattEland.Alfred.Client;
+﻿namespace MattEland.Alfred.Abstractions;
 
 public interface ISpeechProvider {
     void Say(string text);

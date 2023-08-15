@@ -8,6 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Runtime.InteropServices;
+using MattEland.Alfred.Abstractions;
+using MattEland.Alfred.Llama;
 
 namespace MattEland.Alfred.Cli;
 
@@ -23,7 +25,7 @@ public class AlfredProgram : WorkerProgram {
                 services.AddScoped<ILLamaLogger, AlfredLlamaLogger>();
                 services.AddScoped<AlfredClient>();
                 services.AddScoped<AlfredModelWrapper>();
-                services.AddScoped<AlfredBrain>();
+                services.AddScoped<IAlfredBrain, AlfredLlamaBrain>();
 
                 // The speech provider code relies on the Windows OS.
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
@@ -31,7 +33,7 @@ public class AlfredProgram : WorkerProgram {
                 }
 
                 // Detect Options
-                services.AddOptions<AlfredOptions>()
+                services.AddOptions<AlfredLlamaOptions>()
                         .BindConfiguration("Alfred")
                         .ValidateDataAnnotations();
                 services.AddOptions<AlfredCliOptions>()

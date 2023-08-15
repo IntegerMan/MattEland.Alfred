@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using MattEland.Alfred.Abstractions;
+using Microsoft.Extensions.Logging;
 
 namespace MattEland.Alfred.Client;
 
@@ -6,9 +7,9 @@ public class AlfredClient
 {
     private readonly ILogger<AlfredClient> _log;
     private readonly ISpeechProvider? _speech;
-    public AlfredBrain Alfred { get; set; }
+    public IAlfredBrain Alfred { get; set; }
     
-    public AlfredClient(AlfredBrain alfred, ILogger<AlfredClient> log, ISpeechProvider? speech = null)
+    public AlfredClient(IAlfredBrain alfred, ILogger<AlfredClient> log, ISpeechProvider? speech = null)
     {
         _speech = speech;
         Alfred = alfred;

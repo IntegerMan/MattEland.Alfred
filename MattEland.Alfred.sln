@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MattEland.Alfred", "MattEland.Alfred\MattEland.Alfred.csproj", "{522BCD1C-ACFA-42D0-AEEC-2BD11BF4F31B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MattEland.Alfred.Llama", "MattEland.Alfred\MattEland.Alfred.Llama.csproj", "{522BCD1C-ACFA-42D0-AEEC-2BD11BF4F31B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MattEland.Alfred.Cli", "MattEland.Alfred.Cli\MattEland.Alfred.Cli.csproj", "{48677D16-9C22-4509-B8AB-1DAE14BF2CD6}"
 EndProject
@@ -11,9 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MattEland.Alfred.Tests", "M
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MattEland.Alfred.Client", "MattEland.Alfred.Client\MattEland.Alfred.Client.csproj", "{859BD962-54CA-4CCA-A47C-F61389C25C8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MattEland.Workers", "MattEland.Workers\MattEland.Workers.csproj", "{20A297E7-588F-4A36-B834-BBE1711060B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MattEland.Workers", "MattEland.Workers\MattEland.Workers.csproj", "{20A297E7-588F-4A36-B834-BBE1711060B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MattEland.Alfred.Speech.Windows", "MattEland.Alfred.Speech.Windows\MattEland.Alfred.Speech.Windows.csproj", "{193441D3-04EC-4E79-A286-D1DAEDAD08BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MattEland.Alfred.Speech.Windows", "MattEland.Alfred.Speech.Windows\MattEland.Alfred.Speech.Windows.csproj", "{193441D3-04EC-4E79-A286-D1DAEDAD08BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MattEland.Alfred.Abstractions", "MattEland.Alfred.Abstractions\MattEland.Alfred.Abstractions.csproj", "{D0A53207-F1EF-4AC7-AB58-D52C148CE5C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{193441D3-04EC-4E79-A286-D1DAEDAD08BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{193441D3-04EC-4E79-A286-D1DAEDAD08BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{193441D3-04EC-4E79-A286-D1DAEDAD08BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0A53207-F1EF-4AC7-AB58-D52C148CE5C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0A53207-F1EF-4AC7-AB58-D52C148CE5C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0A53207-F1EF-4AC7-AB58-D52C148CE5C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0A53207-F1EF-4AC7-AB58-D52C148CE5C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -6,8 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\MattEland.Alfred\MattEland.Alfred.Llama.csproj" />
-  </ItemGroup>
-
 </Project>

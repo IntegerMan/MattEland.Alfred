@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
 using System.Speech.Synthesis;
+using MattEland.Alfred.Abstractions;
 
 namespace MattEland.Alfred.Speech.Windows;
 

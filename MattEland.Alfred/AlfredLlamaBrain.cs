@@ -1,28 +1,27 @@
-﻿using LLama.Common;
+﻿using System.Text;
 using LLama;
-using System.Text;
-using LLama.Abstractions;
+using LLama.Common;
+using MattEland.Alfred.Abstractions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using static LLama.LLamaTransforms;
 
-namespace MattEland.Alfred;
+namespace MattEland.Alfred.Llama;
 
-public class AlfredBrain
+public class AlfredLlamaBrain : IAlfredBrain
 {
-    private readonly ILLamaExecutor _executor;
     private readonly ChatSession _session;
-    private readonly ILogger<AlfredBrain> _log;
-    private readonly IOptions<AlfredOptions> _options;
+    private readonly ILogger<AlfredLlamaBrain> _log;
+    private readonly IOptions<AlfredLlamaOptions> _options;
     private readonly InferenceParams _inferenceParams;
 
-    public AlfredBrain(AlfredModelWrapper model, ILogger<AlfredBrain> log, IOptions<AlfredOptions> options) {
+    public AlfredLlamaBrain(AlfredModelWrapper model, ILogger<AlfredLlamaBrain> log, IOptions<AlfredLlamaOptions> options) {
         _log = log;
         _options = options;
-        _executor = new InteractiveExecutor(model.Model);
+        InteractiveExecutor executor = new(model.Model);
 
-        _session = new ChatSession(_executor) {
-            OutputTransform = new KeywordTextOutputStreamTransform(new string[] { $"{UserName}:", $"{BotName}:", "Assistant:", "User:" }, redundancyLength: 8, removeAllMatchedTokens: true)
+        _session = new ChatSession(executor) {
+            OutputTransform = new KeywordTextOutputStreamTransform(new[] { $"{UserName}:", $"{BotName}:", "Assistant:", "User:" }, redundancyLength: 8, removeAllMatchedTokens: true)
         };
 
         _inferenceParams = new InferenceParams() {

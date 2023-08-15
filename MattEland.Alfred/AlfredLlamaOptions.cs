@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace MattEland.Alfred; 
+namespace MattEland.Alfred.Llama; 
 
-public class AlfredOptions {
+public class AlfredLlamaOptions {
     [Required]
     public string Prompt { get; set; }
     [Required]

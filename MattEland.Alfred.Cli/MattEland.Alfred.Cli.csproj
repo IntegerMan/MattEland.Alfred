@@ -29,9 +29,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MattEland.Alfred.Abstractions\MattEland.Alfred.Abstractions.csproj" />
     <ProjectReference Include="..\MattEland.Alfred.Client\MattEland.Alfred.Client.csproj" />
     <ProjectReference Include="..\MattEland.Alfred.Speech.Windows\MattEland.Alfred.Speech.Windows.csproj" />
-    <ProjectReference Include="..\MattEland.Alfred\MattEland.Alfred.csproj" />
+    <ProjectReference Include="..\MattEland.Alfred\MattEland.Alfred.Llama.csproj" />
     <ProjectReference Include="..\MattEland.Workers\MattEland.Workers.csproj" />
   </ItemGroup>
 
