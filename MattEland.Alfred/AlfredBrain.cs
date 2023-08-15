@@ -25,7 +25,7 @@ public class AlfredBrain : IDisposable
         Start your responses with "Alfred:" and end them with "Batman:"
         """;
 
-    public AlfredBrain(string modelPath, ILLamaLogger? logger = null) {
+    public AlfredBrain(string modelPath, ILLamaLogger logger) {
         // Initialize a chat session
         ModelParams modelParams = new(modelPath, contextSize: 1024, gpuLayerCount: 5);
         _model = new LLamaModel(modelParams, "UTF-8", logger);
