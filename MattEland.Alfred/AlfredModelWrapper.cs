@@ -12,7 +12,8 @@ public class AlfredModelWrapper : IDisposable {
     private readonly LLamaModel _model;
 
     public AlfredModelWrapper(IOptions<AlfredOptions> options, ILLamaLogger logger) {
-        ModelParams modelParams = new(options.Value.ModelPath);
+        int seed = Random.Shared.Next();
+        ModelParams modelParams = new(options.Value.ModelPath, gpuLayerCount: options.Value.GpuLayerCount, seed: seed);
         _model = new LLamaModel(modelParams, "UTF-8", logger);
     }
 

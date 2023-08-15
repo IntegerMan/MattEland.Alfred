@@ -4,6 +4,7 @@ using System.Text;
 using LLama.Abstractions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using static LLama.LLamaTransforms;
 
 namespace MattEland.Alfred;
 
@@ -13,13 +14,21 @@ public class AlfredBrain
     private readonly ChatSession _session;
     private readonly ILogger<AlfredBrain> _log;
     private readonly IOptions<AlfredOptions> _options;
+    private readonly InferenceParams _inferenceParams;
 
     public AlfredBrain(AlfredModelWrapper model, ILogger<AlfredBrain> log, IOptions<AlfredOptions> options) {
-        _executor = new InteractiveExecutor(model.Model);
-        _session = new ChatSession(_executor);
-        Console.WriteLine();
         _log = log;
         _options = options;
+        _executor = new InteractiveExecutor(model.Model);
+
+        _session = new ChatSession(_executor) {
+            OutputTransform = new KeywordTextOutputStreamTransform(new string[] { $"{UserName}:", $"{BotName}:", "Assistant:", "User:" }, redundancyLength: 8, removeAllMatchedTokens: true)
+        };
+
+        _inferenceParams = new InferenceParams() {
+            Temperature = _options.Value.Temperature,
+            AntiPrompts = new List<string> { $"{UserName}:", "User:" },
+        };
     }
 
     public string UserName => _options.Value.UserName;
@@ -60,24 +69,14 @@ public class AlfredBrain
 
     public string GetResponseToMessage(string message)
     {
-        InferenceParams inferenceParams = new()
-        {
-            Temperature = 0.5f,
-            AntiPrompts = new List<string> {"Matt:", "Eland:", "Batman:", $"{UserName}:", "User:"},
-        };
-
-        _session.History.AddMessage(AuthorRole.User, message);
-
         StringBuilder sb = new();
-        foreach (string chunk in _session.Chat(_session.History, inferenceParams))
+        foreach (string chunk in _session.Chat(message, _inferenceParams))
         {
             _log.LogDebug(chunk);
             sb.Append(chunk);
         }
-        string response = sb.ToString();
-        response = CleanResponse(response);
 
-        return response;
+        return sb.ToString();
     }
 
     public void SaveSession() {
@@ -90,16 +89,5 @@ public class AlfredBrain
         catch (IOException ex) {
             _log.LogError(ex, $"Could not save session information: {ex.Message}");
         }
-    }
-
-    private string CleanResponse(string response) {
-        List<string> ignorable = new() { "Matt:", "Batman:", "User:", "Assistant:", "Bot:", "System:", $"{UserName}:", $"{BotName}:" };
-        foreach (string line in ignorable) {
-            while (response.Contains(line, StringComparison.OrdinalIgnoreCase)) {
-                response = response.Replace(line, string.Empty, StringComparison.OrdinalIgnoreCase).Trim();
-            }
-        }
-
-        return response;
     }
 }

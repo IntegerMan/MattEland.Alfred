@@ -19,4 +19,6 @@ public class AlfredOptions {
     public string UserName { get; set; } = "Batman";
     [Required]
     public string BotName { get; set; } = "ALFRED";
+    public float Temperature { get; set; } = 0.5f;
+    public int GpuLayerCount { get; set; } = 5;
 }

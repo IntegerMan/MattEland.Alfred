@@ -1,11 +1,13 @@
 ﻿using LLama;
 using LLama.Common;
 using MattEland.Alfred.Client;
+using MattEland.Alfred.Speech.Windows;
 using MattEland.Workers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System.Runtime.InteropServices;
 
 namespace MattEland.Alfred.Cli;
 
@@ -22,7 +24,11 @@ public class AlfredProgram : WorkerProgram {
                 services.AddScoped<AlfredClient>();
                 services.AddScoped<AlfredModelWrapper>();
                 services.AddScoped<AlfredBrain>();
-                services.AddSingleton<ISpeechProvider, WindowsSpeechProvider>();
+
+                // The speech provider code relies on the Windows OS.
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
+                    services.AddSingleton<ISpeechProvider, WindowsSpeechProvider>();
+                }
 
                 // Detect Options
                 services.AddOptions<AlfredOptions>()
