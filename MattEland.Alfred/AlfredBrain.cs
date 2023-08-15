@@ -5,10 +5,11 @@ using LLama.Abstractions;
 
 namespace MattEland.Alfred;
 
-public class AlfredBrain
+public class AlfredBrain : IDisposable
 {
     private readonly ILLamaExecutor _executor;
     private readonly ChatSession _session;
+    private readonly LLamaModel _model;
 
     public string InitialPrompt =>
         """
@@ -24,9 +25,11 @@ public class AlfredBrain
         Start your responses with "Alfred:" and end them with "Batman:"
         """;
 
-    public AlfredBrain(string modelPath) {
+    public AlfredBrain(string modelPath, ILLamaLogger? logger = null) {
         // Initialize a chat session
-        _executor = new InteractiveExecutor(new LLamaModel(new ModelParams(modelPath, contextSize: 1024, gpuLayerCount: 5)));
+        ModelParams modelParams = new(modelPath, contextSize: 1024, gpuLayerCount: 5);
+        _model = new LLamaModel(modelParams, "UTF-8", logger);
+        _executor = new InteractiveExecutor(_model);
         _session = new ChatSession(_executor);
         Console.WriteLine();
     }
@@ -69,7 +72,6 @@ public class AlfredBrain
         InferenceParams inferenceParams = new()
         {
             Temperature = 0.5f,
-            MaxTokens = 250,
             AntiPrompts = new List<string> {"Matt:", "Eland:", "Batman:", $"{UserName}:", "User:"},
         };
 
@@ -106,5 +108,10 @@ public class AlfredBrain
         }
 
         return response;
+    }
+
+    public void Dispose()
+    {
+        _model.Dispose();
     }
 }

@@ -11,9 +11,10 @@ internal class Program
     {
         string modelPath = @"C:\Models\wizardLM-7B.ggmlv3.q4_1.bin";
 
-        AlfredBrain alfred = new(modelPath);
-
-        using var speech = new WindowsSpeechProvider();
+        LLamaDefaultLogger logger = LLamaDefaultLogger.Default.EnableConsole().EnableFile("llamadebug.log");
+        using AlfredBrain alfred = new(modelPath, logger);
+        using WindowsSpeechProvider speech = new();
+        
         AlfredClient client = new(alfred, speech);
 
         client.ConductConversation();
