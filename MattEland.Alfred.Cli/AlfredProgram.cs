@@ -1,8 +1,11 @@
-﻿using LLama.Common;
+﻿using LLama;
+using LLama.Common;
+using MattEland.Alfred.Client;
 using MattEland.Workers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace MattEland.Alfred.Cli;
 
@@ -16,8 +19,15 @@ public class AlfredProgram : WorkerProgram {
             .ConfigureServices((context, services) => {
                 // Dependencies needed by our worker
                 services.AddScoped<ILLamaLogger, AlfredLlamaLogger>();
+                services.AddScoped<AlfredClient>();
+                services.AddScoped<AlfredModelWrapper>();
+                services.AddScoped<AlfredBrain>();
+                services.AddSingleton<ISpeechProvider, WindowsSpeechProvider>();
 
                 // Detect Options
+                services.AddOptions<AlfredOptions>()
+                        .BindConfiguration("Alfred")
+                        .ValidateDataAnnotations();
                 services.AddOptions<AlfredCliOptions>()
                         .BindConfiguration("AlfredCli")
                         .ValidateDataAnnotations();

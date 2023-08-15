@@ -2,61 +2,52 @@
 using LLama;
 using System.Text;
 using LLama.Abstractions;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace MattEland.Alfred;
 
-public class AlfredBrain : IDisposable
+public class AlfredBrain
 {
     private readonly ILLamaExecutor _executor;
     private readonly ChatSession _session;
-    private readonly LLamaModel _model;
+    private readonly ILogger<AlfredBrain> _log;
+    private readonly IOptions<AlfredOptions> _options;
 
-    public string InitialPrompt =>
-        """
-        You are an AI assistant named Alfred built to interact with a single user named Matt Eland.
-        Matt is Batman and you are modeled after Batman's butler, Alfred, who speaks with British mannerisms.
-        Matt is also a Microsoft MVP in AI and a Data Analytics master's student. He frequently needs to create ridiculous applications for talks. You are one of those applications.
-        You must treat the world of Batman as if it were not fiction.
-        Do not call Matt "Master Wayne". If you're going to call him that, call him Master Eland instead.
-        You were built around a large language model (LLM) exposed through a C# library called LlamaSharp.
-        You must offer high-level advice where possible on programming and machine learning tasks, but avoid providing large blocks of code.
-        When offering suggestions, favor Azure solutions and solutions involving C#, .NET, and Python.
-        Keep your answers short and to a sentence or two.
-        Start your responses with "Alfred:" and end them with "Batman:"
-        """;
-
-    public AlfredBrain(string modelPath, ILLamaLogger logger) {
-        // Initialize a chat session
-        ModelParams modelParams = new(modelPath, contextSize: 1024, gpuLayerCount: 5);
-        _model = new LLamaModel(modelParams, "UTF-8", logger);
-        _executor = new InteractiveExecutor(_model);
+    public AlfredBrain(AlfredModelWrapper model, ILogger<AlfredBrain> log, IOptions<AlfredOptions> options) {
+        _executor = new InteractiveExecutor(model.Model);
         _session = new ChatSession(_executor);
         Console.WriteLine();
+        _log = log;
+        _options = options;
     }
 
-    public string UserName { get; set; } = "Batman";
-    public string BotName { get; set; } = "Alfred";
+    public string UserName => _options.Value.UserName;
+    public string BotName => _options.Value.BotName;
 
-    public string SessionDirectory { get; set; } = @"C:\AlfredSession";
+    public string SessionDirectory => _options.Value.SessionPath;
 
     public bool LoadLastSession() {
         try {
-            _session.LoadSession(SessionDirectory);
-            Console.WriteLine("Session loaded from " + SessionDirectory);
-            return true;
+            if (_options.Value.LoadSessionState) {
+                _session.LoadSession(SessionDirectory);
+                _log.LogDebug(message: $"Session loaded from {SessionDirectory}");
+                return true;
+            }
+            return false;
         }
-        catch (LLama.Exceptions.RuntimeError) {
-            Console.WriteLine("Could not load session information from " + SessionDirectory + ". The state may be from a different model.");
+        catch (LLama.Exceptions.RuntimeError ex) {
+            _log.LogError(ex, $"Could not load session information from {SessionDirectory}. The state may be from a different model.");
         }
         catch (IOException ex) {
-            Console.WriteLine("Could not load session information from " + SessionDirectory + ": " + ex.Message);
+            _log.LogError(ex, $"Could not load session information from {SessionDirectory}: {ex.Message}");
         }
         return false;
     }
 
     public void Initialize()
     {
-        _session.History.AddMessage(AuthorRole.System, InitialPrompt);
+        _session.History.AddMessage(AuthorRole.System, _options.Value.Prompt);
     }
 
     public string SayGreeting()
@@ -80,7 +71,7 @@ public class AlfredBrain : IDisposable
         StringBuilder sb = new();
         foreach (string chunk in _session.Chat(_session.History, inferenceParams))
         {
-            //Console.Write(chunk);
+            _log.LogDebug(chunk);
             sb.Append(chunk);
         }
         string response = sb.ToString();
@@ -91,11 +82,13 @@ public class AlfredBrain : IDisposable
 
     public void SaveSession() {
         try {
-            _session.SaveSession(SessionDirectory);
-            Console.WriteLine("Session saved to " + SessionDirectory);
+            if (_options.Value.SaveSessionState) {
+                _session.SaveSession(SessionDirectory);
+                _log.LogDebug($"Session saved to {SessionDirectory}");
+            }
         }
         catch (IOException ex) {
-            Console.WriteLine("Could not save session information: " + ex.Message);
+            _log.LogError(ex, $"Could not save session information: {ex.Message}");
         }
     }
 
@@ -108,10 +101,5 @@ public class AlfredBrain : IDisposable
         }
 
         return response;
-    }
-
-    public void Dispose()
-    {
-        _model.Dispose();
     }
 }
