@@ -1,6 +1,6 @@
 ﻿namespace MattEland.Alfred.Abstractions;
 
-public interface IAlfredBrain
+public interface IAlfredTextGenerator
 {
     bool LoadLastSession();
     void Initialize();

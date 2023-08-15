@@ -26,7 +26,7 @@ public class AlfredProgram : WorkerProgram {
                 services.AddScoped<ILLamaLogger, AlfredLlamaLogger>();
                 services.AddScoped<AlfredClient>();
                 services.AddScoped<AlfredModelWrapper>();
-                services.AddScoped<IAlfredBrain, AlfredLlamaBrain>();
+                services.AddScoped<IAlfredTextGenerator, AlfredLlamaTextGenerator>();
 
                 // The speech provider code relies on the Windows OS.
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {

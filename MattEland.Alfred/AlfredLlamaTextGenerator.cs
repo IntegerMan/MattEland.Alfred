@@ -8,14 +8,14 @@ using static LLama.LLamaTransforms;
 
 namespace MattEland.Alfred.Llama;
 
-public class AlfredLlamaBrain : IAlfredBrain
+public class AlfredLlamaTextGenerator : IAlfredTextGenerator
 {
     private readonly ChatSession _session;
-    private readonly ILogger<AlfredLlamaBrain> _log;
+    private readonly ILogger<AlfredLlamaTextGenerator> _log;
     private readonly IOptions<AlfredLlamaOptions> _options;
     private readonly InferenceParams _inferenceParams;
 
-    public AlfredLlamaBrain(AlfredModelWrapper model, ILogger<AlfredLlamaBrain> log, IOptions<AlfredLlamaOptions> options) {
+    public AlfredLlamaTextGenerator(AlfredModelWrapper model, ILogger<AlfredLlamaTextGenerator> log, IOptions<AlfredLlamaOptions> options) {
         _log = log;
         _options = options;
         InteractiveExecutor executor = new(model.Model);

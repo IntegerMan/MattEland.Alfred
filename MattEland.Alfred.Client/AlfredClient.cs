@@ -7,9 +7,9 @@ public class AlfredClient
 {
     private readonly ILogger<AlfredClient> _log;
     private readonly ISpeechProvider? _speech;
-    public IAlfredBrain Alfred { get; set; }
+    public IAlfredTextGenerator Alfred { get; set; }
     
-    public AlfredClient(IAlfredBrain alfred, ILogger<AlfredClient> log, ISpeechProvider? speech = null)
+    public AlfredClient(IAlfredTextGenerator alfred, ILogger<AlfredClient> log, ISpeechProvider? speech = null)
     {
         _speech = speech;
         Alfred = alfred;
