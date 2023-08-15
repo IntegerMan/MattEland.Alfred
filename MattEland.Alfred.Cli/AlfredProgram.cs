@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using System.Runtime.InteropServices;
 using MattEland.Alfred.Abstractions;
 using MattEland.Alfred.Llama;
+using MattEland.Alfred.Speech.Azure;
 
 namespace MattEland.Alfred.Cli;
 
@@ -29,12 +30,15 @@ public class AlfredProgram : WorkerProgram {
 
                 // The speech provider code relies on the Windows OS.
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
-                    services.AddSingleton<ISpeechProvider, WindowsSpeechProvider>();
+                    services.AddSingleton<ISpeechProvider, AzureAiSpeechProvider>();
                 }
 
                 // Detect Options
                 services.AddOptions<AlfredLlamaOptions>()
                         .BindConfiguration("Alfred")
+                        .ValidateDataAnnotations();                
+                services.AddOptions<AzureAiSpeechOptions>()
+                        .BindConfiguration("AzureSpeech")
                         .ValidateDataAnnotations();
                 services.AddOptions<AlfredCliOptions>()
                         .BindConfiguration("AlfredCli")
@@ -43,7 +47,9 @@ public class AlfredProgram : WorkerProgram {
                 // Register our service
                 services.AddHostedService<AlfredCliWorker>();
             })
-            .ConfigureAppConfiguration(services => {
+            .ConfigureAppConfiguration(services =>
+            {
+                services.AddUserSecrets<AlfredProgram>();
                 services.AddCommandLine(args, new Dictionary<string, string>() {
                     { "-m", "AlfredCli:ModelPath" },
                     { "--model", "AlfredCli:ModelPath" },

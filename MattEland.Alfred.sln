@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MattEland.Alfred.Speech.Win
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MattEland.Alfred.Abstractions", "MattEland.Alfred.Abstractions\MattEland.Alfred.Abstractions.csproj", "{D0A53207-F1EF-4AC7-AB58-D52C148CE5C0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MattEland.Alfred.Speech.Azure", "MattEland.Alfred.Speech.Azure\MattEland.Alfred.Speech.Azure.csproj", "{B91232E7-A6E4-44D9-86C9-4B0F07BF3A0A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{D0A53207-F1EF-4AC7-AB58-D52C148CE5C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0A53207-F1EF-4AC7-AB58-D52C148CE5C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0A53207-F1EF-4AC7-AB58-D52C148CE5C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B91232E7-A6E4-44D9-86C9-4B0F07BF3A0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B91232E7-A6E4-44D9-86C9-4B0F07BF3A0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B91232E7-A6E4-44D9-86C9-4B0F07BF3A0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B91232E7-A6E4-44D9-86C9-4B0F07BF3A0A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

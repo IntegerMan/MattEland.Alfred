@@ -23,6 +23,7 @@ public abstract class WorkerProgram {
                 })
                 .ConfigureAppConfiguration(services => {
                     services.AddEnvironmentVariables(prefix: EnvironmentVariablePrefix);
+                    services.AddUserSecrets<WorkerProgram>();
                 })
                 // TODO: This might not be needed
                 .ConfigureLogging((hostContext, config) => {

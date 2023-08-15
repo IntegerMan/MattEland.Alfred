@@ -1,10 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <UserSecretsId>c4ad8c8a-3e4f-4a41-a37f-4c8e4bfe418a</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -31,6 +32,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MattEland.Alfred.Abstractions\MattEland.Alfred.Abstractions.csproj" />
     <ProjectReference Include="..\MattEland.Alfred.Client\MattEland.Alfred.Client.csproj" />
+    <ProjectReference Include="..\MattEland.Alfred.Speech.Azure\MattEland.Alfred.Speech.Azure.csproj" />
     <ProjectReference Include="..\MattEland.Alfred.Speech.Windows\MattEland.Alfred.Speech.Windows.csproj" />
     <ProjectReference Include="..\MattEland.Alfred\MattEland.Alfred.Llama.csproj" />
     <ProjectReference Include="..\MattEland.Workers\MattEland.Workers.csproj" />
